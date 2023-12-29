@@ -2,15 +2,15 @@ import hashlib
 import hmac
 import urllib.parse
 
-class vnpay:
+class VnPay:
     requestData = {}
     responseData = {}
 
     def get_payment_url(self, vnpay_payment_url, secret_key):
         inputData = sorted(self.requestData.items())
         queryString = ''
-        hasData = ''
         seq = 0
+
         for key, val in inputData:
             if seq == 1:
                 queryString = queryString + "&" + key + '=' + urllib.parse.quote_plus(str(val))
@@ -23,7 +23,8 @@ class vnpay:
 
     def validate_response(self, secret_key):
         vnp_SecureHash = self.responseData['vnp_SecureHash']
-        # Remove hash params
+        
+        # Loại bỏ các tham số hash
         if 'vnp_SecureHash' in self.responseData.keys():
             self.responseData.pop('vnp_SecureHash')
 
@@ -31,19 +32,21 @@ class vnpay:
             self.responseData.pop('vnp_SecureHashType')
 
         inputData = sorted(self.responseData.items())
-        hasData = ''
+        hashData = ''
         seq = 0
+
         for key, val in inputData:
             if str(key).startswith('vnp_'):
                 if seq == 1:
-                    hasData = hasData + "&" + str(key) + '=' + urllib.parse.quote_plus(str(val))
+                    hashData = hashData + "&" + str(key) + '=' + urllib.parse.quote_plus(str(val))
                 else:
                     seq = 1
-                    hasData = str(key) + '=' + urllib.parse.quote_plus(str(val))
-        hashValue = self.__hmacsha512(secret_key, hasData)
+                    hashData = str(key) + '=' + urllib.parse.quote_plus(str(val))
+
+        hashValue = self.__hmacsha512(secret_key, hashData)
 
         print(
-            'Validate debug, HashData:' + hasData + "\n HashValue:" + hashValue + "\nInputHash:" + vnp_SecureHash)
+            'Validate debug, HashData:' + hashData + "\n HashValue:" + hashValue + "\nInputHash:" + vnp_SecureHash)
 
         return vnp_SecureHash == hashValue
 
