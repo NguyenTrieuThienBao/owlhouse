@@ -16,7 +16,8 @@
         <i class='bx bx-menu' style='color:#12f7ff' id="bx-menu">
             <div class="menu" id="menu">
                 <ul class="sub-menu">
-                    <li><a href="/">Trang chủ</a></li>
+                    <li><a href="{% url 'polls:homepage' %}">Trang chủ</a></li>
+                    <li><a href="{% url 'polls:listbooks' %}">Tất cả sản phẩm</a></li>
                     <li><a href="#">Thể loại</a>
                         <i class='bx bx-chevron-down' id="the-loai-chevron-down"></i>
                         <ul class="the-loai" id="the-loai">
@@ -71,23 +72,33 @@
             </div>
         </i>
         <img src="{% static 'polls/image/logo.svg' %}" alt="">
-        <a href="#" class="logo">Ngôi nhà của Cú</a>
+        <a href="{% url 'polls:homepage' %}" class="logo">Ngôi nhà của Cú</a>
         <ul class="search">
             <form action="{% url 'polls:search' %}" method="get">
             <li>
                 <input type="text" placeholder="Tìm kiếm" name="search">
-                <button type="submit"><i class='bx bx-search-alt' style='color:#12f7ff'></i></button>
+                <button type='submit'><i class='bx bx-search-alt' style='color:#12f7ff'></i></button>
             </li>
             </form>
-            <li><a href="shopping-cart/"><i class='bx bx-shopping-bag' style='color:#12f7ff' ></i></a></i></li>
+            <li><a href="/shopping-cart/"><i class='bx bx-shopping-bag' style='color:#12f7ff' ></i></a></i></li>
             <li><a href="#"><i class='bx bxs-user' style='color:#12f7ff'></i></a></li>
         </ul>
+        {% if user.is_authenticated %}
         <ul class="navlist">
-            <li><a href="/">Trang chủ</a></li>
-            <li><a href="/#about">Giới thiệu</a></li>
-            <li><a href="/#contact">Liên hệ</a></li>
-            <li><a href="/login">Đăng nhập</a></li>
+            <li><a href="{% url 'polls:homepage' %}">Trang chủ</a></li>
+            <li><a href="{% url 'polls:homepage' %}#about">Giới thiệu</a></li>
+            <li><a href="{% url 'polls:homepage' %}#contact">Liên hệ</a></li>
+            <li><span>Hi, {{ user.username }}</span></li>
+            <li><a href="{% url 'polls:logout' %}">Đăng xuất</a></li>
         </ul>
+        {% else %}
+        <ul class="navlist">
+            <li><a href="{% url 'polls:homepage' %}">Trang chủ</a></li>
+            <li><a href="{% url 'polls:homepage' %}#about">Giới thiệu</a></li>
+            <li><a href="{% url 'polls:homepage' %}#contact">Liên hệ</a></li>
+            <li><a href="{% url 'polls:login' %}">Đăng nhập</a></li>
+        </ul>
+        {% endif %}
     </header>
 
     <!--Đường dẫn mỗi trang-->
@@ -115,8 +126,7 @@
                     <p>Giá: {{ product.price }} đ</p>
                     <p>Nhà xuất bản: {{ product.publisher }}</p>
                     <div id="buy-amount">
-                    <form action="{% url 'polls:add_cart' product.id %}" method='POST'>
-                            {% csrf_token %}
+                    
                         <button class="minus-btn" id="minus">
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="-3 -3 30 30" stroke-width="2.0" stroke="currentColor" class="w-6 h-6">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 12h-15" />
@@ -130,12 +140,16 @@
                         </button>
                     </div>
                     <div class="button-buy-add">
+                    {% with quantity=1 %}
+                    <form action="{% url 'polls:add_cart' product.id quantity %}" method='POST' class='add-cart-form' data-product-id='{{ product.id }}'>
+                    {% csrf_token %}
                             <input type='hidden' name='add-cart'>
                             <button href="#" class="btn" id="add-cart" type='submit'>Thêm vào <i class='bx bxs-cart'></i></button>
-                            <button href="#" class="btn" id="shop-now" type='submit'>Mua ngay</button>
-                        
-                        </div>
+                            <button onclick="redirect_to_cart()" class="btn" id="shop-now" type='submit'>Mua ngay</button>
                     </form>
+                    {% endwith %}
+                    </div>
+                    
                 </div>
             </div>
         </div>
@@ -200,17 +214,65 @@
             </div>
             <div class="container">
                 <div class="wrapper">
-                {% for p in related_products %}
-                    <img src="{{ p.image.url }}" onclick="imageClick('{{ p.get_absolute_url }}')">
-                {% endfor %}
+                    <div class="item"> 
+                        <img src="{% static 'polls/image/products/Dieu-ky-dieu-cua-tiem-tap-hoa-Namiya.webp' %}">
+                    </div>
+                    <div class="item">
+                        <img src="{% static 'polls/image/products/Tam-the.webp' %}">
+                    </div>
+                    <div class="item">
+                        <img src="{% static 'polls/image/products/Phia-sau-nghi-can-X.webp' %}">
+                    </div>
+                    <div class="item">
+                        <img src="{% static 'polls/image/products/phapytanminh.jpeg' %}">
+                    </div>
+                    <div class="item">
+                        <img src="{% static 'polls/image/products/Quai-vat-trong-quan-do-nuong.webp' %}">
+                    </div>
                 </div>
-            </div> 
+                <div class="buttons">
+                    <button id="prev"><</button>
+                    <button id="next">></button>
+                </div>
+                <ul class="dots">
+                    <li class="active"></li>
+                    <li></li>
+                    <li></li>
+                    <li></li>
+                    <li></li>
+                </ul>
+            </div>
         </div>
        <hr  width="100%" size="5px" align="center" color="#12f7ff" />
        <!--Sách cùng thể loại-->
-       <div class="">
-
-       </div>
+       <section class="products" id="products">
+        <h2>Sản phẩm cùng loại</h2>
+        <div class="product-card">
+        {% for product in related_products %}
+        <a href="{{ product.get_absolute_url }}" style="text-decoration:none; color:white">
+            <div class="card">
+                <img src="{{ product.image.url }}" alt="">
+                <div class="info">
+                    <div class="price-name">
+                        <h3>{{ product.title }}</h3>
+                    </div>
+                    <p style='text-transform:uppercase'>Tác giả: {{ product.author }}</p>
+                    <p>Giá: {{ product.price }}đ</p>
+        </a>
+                    {% with quantity=1 %}
+                    <form action="{% url 'polls:add_cart' product.id quantity %}" method='POST' class='add-cart-form-related-product' data-product-id='{{ product.id }}'>
+                    {% csrf_token %}
+                            <input type='hidden' name='add-cart'>
+                            <button href="#" class="btn" id="add-cart" type='submit'>Thêm vào <i class='bx bxs-cart'></i></button>
+                            <button onclick="redirect_to_cart()" class="btn" id="shop-now" type='submit'>Mua ngay</button>
+                    </form>
+                    {% endwith %}
+                </div>
+            </div>
+        {% endfor %}
+           
+        </div>
+        </section>
         <script src="{% static 'polls/js/onlybook-script.js' %}"></script>
     </section>
 
@@ -229,5 +291,65 @@
     </footer>
 </body>
 <script src="{% static 'polls/js/homepage_script.js' %}"></script>
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+<script src="{% static 'polls/js/onlybook-scipt.js' %}"></script>
+<script>
+    $(document).ready(function () {
+    $('.add-cart-form').submit(function(event) {
+        var productId = $(this).data('product-id');
+        var productAmount = $('#amount').val()
+        event.preventDefault();
+        var csrfToken = $("[name=csrfmiddlewaretoken]").val();
+        $.ajax({
+            type: 'POST',
+            url: "/add_cart/" + productId + '/' + productAmount,  // Replace with the actual URL of your view
+            headers: {
+                'X-CSRFToken': csrfToken  // Include CSRF token in the headers
+            },
+            success: function (data) {
+                
+            },
+            error: function (data) {
+                alert('Form submission failed!');
+            }
+        });
+    });
 
+    $('.add-cart-form-related-product').submit(function(event) {
+        var productId = $(this).data('product-id');
+        var productAmount = "1"
+        event.preventDefault();
+        var csrfToken = $("[name=csrfmiddlewaretoken]").val();
+        $.ajax({
+            type: 'POST',
+            url: "/add_cart/" + productId + '/' + productAmount,  // Replace with the actual URL of your view
+            headers: {
+                'X-CSRFToken': csrfToken  // Include CSRF token in the headers
+            },
+            success: function (data) {
+                
+            },
+            error: function (data) {
+                alert('Form submission failed!');
+            }
+        });
+    });
+
+    });
+    var isClicked = false;
+    function redirect_to_cart()
+    {
+        if (isClicked){
+            return;
+        }
+        isClicked = true;
+        setTimeout(function() {
+        // Reset the flag after the delay
+        isClicked = false;
+        
+        // Redirect to another page
+        window.location.href = '/shopping-cart'; // Replace with your desired URL
+    }, 100);
+    };
+</script>
 </html>

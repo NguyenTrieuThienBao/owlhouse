@@ -28,12 +28,15 @@
     color: #1d002c;
     margin: 10px 10px;
 }
+
 .books img{
-    width: 100px;
+    min-width: 30%;
+    max-width: 30%;
     height: 150px;
     padding: 10px 50px;
     flex: 0.5;
 }
+
 .detail_book{
     padding-left: 5rem;
 }
@@ -131,6 +134,77 @@ ul.breadcrumb li a:hover {
     }
     .info-o p{
         font-size: 6rem;
+    }
+}
+@media screen and (max-width: 1024px) and (min-width: 768px) {
+    body{
+        width: 1400px;
+    }
+    header{
+        width: 1400px;
+        
+    }
+}
+
+.eachline p{
+    margin-left: 5rem;
+}
+.eachline input{
+    border-radius: 25px;
+    height: 30px;
+    padding-left: 10px;
+    color: #1d002c;
+    background: #fff;
+    font-size: 1rem;
+    width: 50%;
+    margin-right: 5rem;
+}
+
+@media screen and (max-width: 431px) and (min-width: 320px){
+    
+    .pay{
+        margin-top: 180px;
+        margin-bottom: 50px;
+        width: 65rem;
+        border-radius: 25px;
+        padding: 45px;
+        margin-left: 10%;
+    }
+    .pay img{
+        width: 25rem;
+        height: 27rem;
+    }
+    .eachline input{
+        height: 55px;
+        font-size: 3rem;
+    }
+    .pay-html #small-logo{
+        width: 10rem;
+        height: 10rem;
+    }
+    .pay h1{
+        font-size: 3.5rem;
+    }
+    .pay p{
+        font-size: 3rem;
+    }
+    .btn-submit-pay{
+        font-size: 3rem;
+    }
+    .detail_book{
+        padding-left: 0rem;
+        padding-top: 1.5rem;
+    }
+    .detail_book .line{
+        display: flex;
+    }
+    .detail_book .line p{
+        padding: 0.5rem 0.5rem;
+        font-size: 2.5rem;
+    }
+    .books img{
+        min-width: 45%;
+        max-width: 45%;
     }
 }
 @media screen and (max-width: 1024px) and (min-width: 768px) {

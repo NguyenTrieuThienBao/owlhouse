@@ -1,5 +1,7 @@
 from pathlib import Path
 import os
+from urllib.parse import quote
+
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -126,3 +128,10 @@ LOGIN_REDIRECT_URL = 'home'  # Redirect authenticated users here
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')
+
+# VNPAY CONFIG
+VNPAY_RETURN_URL = 'http://localhost:8000/payment_return'  # get from config
+VNPAY_PAYMENT_URL = 'https://sandbox.vnpayment.vn/paymentv2/vpcpay.html'  # get from config
+VNPAY_API_URL = 'https://sandbox.vnpayment.vn/merchant_webapi/api/transaction'
+VNPAY_TMN_CODE = '460XLNUO'  # Website ID in VNPAY System, get from config
+VNPAY_HASH_SECRET_KEY = 'NXWICYVCMPFEIFLXGXDFPBMXOMYEZAHM'  # Secret key for create checksum,get from config

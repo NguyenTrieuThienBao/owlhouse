@@ -124,7 +124,7 @@
             {% if category %}
                 {{ category.name }} 
             {% else %}
-                Tất cả sản phẩm:
+                Tất cả sản phẩm
             {% endif %}
         </h2>
 
@@ -142,12 +142,14 @@
                         <p>Giá: {{ p.price }} đ</p>
                     </div>
                 </a>
-                    <form action="{% url 'polls:add_cart' p.id %}" method='POST'>
-                        {% csrf_token %}
-                        <input type='hidden' name='add-cart'>
-                        <button href="#" class="btn" id="add-cart" type='submit'>Thêm vào <i class='bx bxs-cart'></i></button>
-                        <button href="#" class="btn" id="shop-now" type='submit'>Mua ngay</button>
+                    {% with quantity=1 %}
+                    <form action="{% url 'polls:add_cart' p.id quantity %}" method='POST' class='add-cart-form' data-product-id='{{ p.id }}'>
+                    {% csrf_token %}
+                            <input type='hidden' name='add-cart'>
+                            <button href="#" class="btn" id="add-cart" type='submit'>Thêm vào <i class='bx bxs-cart'></i></button>
+                            <button onclick="redirect_to_cart()" class="btn" id="shop-now" type='submit'>Mua ngay</button>
                     </form>
+                    {% endwith %}
                 
             </div>
         
@@ -169,4 +171,44 @@
     </footer>
 </body>
 <script src="{% static 'polls/js/homepage_script.js' %}"></script>
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+<script>
+    $(document).ready(function () {
+    $('.add-cart-form').submit(function(event) {
+        var productId = $(this).data('product-id');
+        var productAmount = "1"
+        event.preventDefault();
+        var csrfToken = $("[name=csrfmiddlewaretoken]").val();
+        $.ajax({
+            type: 'POST',
+            url: "/add_cart/" + productId + '/' + productAmount,  // Replace with the actual URL of your view
+            headers: {
+                'X-CSRFToken': csrfToken  // Include CSRF token in the headers
+            },
+            success: function (data) {
+                
+            },
+            error: function (data) {
+                alert('Form submission failed!');
+            }
+        });
+    });
+
+    });
+    var isClicked = false;
+    function redirect_to_cart()
+    {
+        if (isClicked){
+            return;
+        }
+        isClicked = true;
+        setTimeout(function() {
+        // Reset the flag after the delay
+        isClicked = false;
+        
+        // Redirect to another page
+        window.location.href = '/shopping-cart'; // Replace with your desired URL
+    }, 100);
+    };
+</script>
 </html>

@@ -16,7 +16,8 @@
         <i class='bx bx-menu' style='color:#12f7ff' id="bx-menu">
             <div class="menu" id="menu">
                 <ul class="sub-menu">
-                    <li><a href="/">Trang chủ</a></li>
+                    <li><a href="{% url 'polls:homepage' %}">Trang chủ</a></li>
+                    <li><a href="{% url 'polls:listbooks%}">Tất cả sản phẩm</a></li>
                     <li><a href="#">Thể loại</a>
                         <i class='bx bx-chevron-down' id="the-loai-chevron-down"></i>
                         <ul class="the-loai" id="the-loai">

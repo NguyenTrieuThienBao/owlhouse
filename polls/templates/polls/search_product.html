@@ -75,10 +75,10 @@
         <ul class="search">
             <form action="{% url 'polls:search' %}" method="get">
             <li>
-                <input type="search" placeholder="Tìm kiếm" name="search">
-                <button class='bx bx-search-alt' style='color:#12f7ff' type='submit'></button>
+                <input type="text" placeholder="Tìm kiếm" name="search">
+                <button type='submit'><i class='bx bx-search-alt' style='color:#12f7ff'></i></button>
             </li>
-           </form>
+            </form>
  {% if user.is_authenticated %}
             <li><a href="{% url 'polls:cart' %}"><i class='bx bx-shopping-bag' style='color:#12f7ff'></i></a></li>
             <li><a href="#"><i class='bx bxs-user' style='color:#12f7ff'></i></a></li>
@@ -108,7 +108,7 @@
     <!--Đường dẫn mỗi trang-->
     
     <ul class="breadcrumb">
-        <li><a href="/">Trang chủ</a></li>
+        <li><a href="{% url 'polls:homepage' %}">Trang chủ</a></li>
         <li>
             {% if category %}
                 {{ category.name }} 
@@ -129,8 +129,9 @@
         </h2>
         <div class="product-card">
         {% for p in products%}
-        <a href="{{ p.get_absolute_url }}" style="text-decoration:none; color:white">
+        
             <div class="card" >
+            <a href="{{ p.get_absolute_url }}" style="text-decoration:none; color:white">
                 <img src="{{ p.image.url }}" alt="">
                 <div class="info">
                     <div class="price-name">
@@ -138,11 +139,18 @@
                     </div>
                     <p style='text-transform:uppercase'>Tác giả: {{ p.author }}</p>
                     <p>Giá: {{ p.price }} đ</p>
-                    <button href="#" class="btn" id="add-cart">Thêm vào <i class='bx bxs-cart'></i></button>
-                    <button  href="#" class="btn" id="shop-now">Mua ngay</button>
+            </a>
+                    {% with quantity=1 %}
+                    <form action="{% url 'polls:add_cart' p.id quantity %}" method='POST' class='add-cart-form' data-product-id='{{ p.id }}'>
+                    {% csrf_token %}
+                            <input type='hidden' name='add-cart'>
+                            <button href="#" class="btn" id="add-cart" type='submit'>Thêm vào <i class='bx bxs-cart'></i></button>
+                            <button onclick="redirect_to_cart()" class="btn" id="shop-now" type='submit'>Mua ngay</button>
+                    </form>
+                    {% endwith %}
                 </div>
             </div>
-        </a>
+        
         {% endfor %}
         </div>
     </section>
@@ -160,4 +168,44 @@
     </footer>
 </body>
 <script src="{% static 'polls/js/homepage_script.js' %}"></script>
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+<script>
+    $(document).ready(function () {
+    $('.add-cart-form').submit(function(event) {
+        var productId = $(this).data('product-id');
+        var productAmount = "1"
+        event.preventDefault();
+        var csrfToken = $("[name=csrfmiddlewaretoken]").val();
+        $.ajax({
+            type: 'POST',
+            url: "/add_cart/" + productId + '/' + productAmount,  // Replace with the actual URL of your view
+            headers: {
+                'X-CSRFToken': csrfToken  // Include CSRF token in the headers
+            },
+            success: function (data) {
+                
+            },
+            error: function (data) {
+                alert('Form submission failed!');
+            }
+        });
+    });
+    });
+    var isClicked = false;
+    function redirect_to_cart()
+    {
+        if (isClicked){
+            return;
+        }
+        isClicked = true;
+        setTimeout(function() {
+        // Reset the flag after the delay
+        isClicked = false;
+        
+        // Redirect to another page
+        window.location.href = '/shopping-cart'; // Replace with your desired URL
+    }, 100);
+    };
+    
+</script>
 </html>

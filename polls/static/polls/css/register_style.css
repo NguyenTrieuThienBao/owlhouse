@@ -158,3 +158,83 @@ ul.breadcrumb li a:hover {
     }
 }
 
+@media screen and (max-width: 426px) and (min-width: 320px){
+    
+    header .bx-menu{
+        font-size: 5rem;
+    }
+    .navlist li a{
+        display: none;
+    }
+    .logo{
+        font-size: 4rem;
+    }
+    .search input{
+        font-size: 3rem;
+        width: 200px;
+        height: 100px;
+    }
+    header img{
+        width: 100px;
+        height: 100px;
+    }
+    ul.breadcrumb{
+        display: none;
+    }
+    .info-o p{
+        font-size: 6rem;
+    }
+    .register{
+        width: 70rem;
+        height: max-content;
+        margin: 0 auto;
+        margin-bottom: 100%;
+        margin-top: 10rem;
+    }
+    .register h1{
+        font-size: 4rem;
+    }
+    .row{
+        margin-top: 30px;
+    }
+    .row p{
+        font-size: 3rem;
+    }
+    .row input{
+        height: 5rem;
+        border-radius: 55px;
+        font-size: 2.5rem;
+    }
+    .btn-submit-register{
+        font-size: 3rem;
+        height: 7rem;
+        width: 20rem;
+        border-radius: 100px;
+        font-weight: 520;
+    }
+    #small-logo{
+        width: 10rem;
+        height: 10rem;
+        margin-top: 10px;
+    }
+    .form-control.error small {
+        color: red;
+        font-size: 2rem;
+    }
+    .form-control.error input {
+      border: 5px solid red;
+    }
+    .form-control.success small {
+        color: red;
+        font-size: 2rem;
+    }
+}
+@media screen and (max-width: 1024px) and (min-width: 768px) {
+    body{
+        width: 1400px;
+    }
+    header{
+        width: 1400px;
+        
+    }
+}

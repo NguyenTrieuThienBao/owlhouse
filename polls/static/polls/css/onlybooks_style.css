@@ -393,3 +393,164 @@ ul.breadcrumb li a:hover {
     }
 }
 
+@media screen and (max-width: 431px) and (min-width: 320px){
+    .card-o .info-o{
+        display: block;
+        margin-left: -250px;
+        width: 52rem;
+        height: 44rem;
+        left: 30%;
+        margin-top: 3rem;
+    }
+    .card-o .info-o p{
+        font-size: 2.3rem;
+        margin-bottom: 1.5rem;
+    }
+    .card-o .info-o h3{
+        font-size: 3rem;
+        margin-bottom: 4rem;
+    }
+    .content-of-book{
+        margin-top: 112%;
+        padding-right: 1rem;
+        padding-left: 1rem;
+        font-size: 2.6rem;
+    }
+    .product-o-card{
+        display: block;
+        width:55rem;
+        height:40rem;
+        left: 60%; 
+        margin: 0 auto;  
+    }
+    .intro q{
+        width: 50rem;
+        font-size: 2.3rem;
+        padding: 1rem;
+    }
+    .intro{
+        width: 40rem;
+        margin-left: 10px;
+    }
+    .card-o{
+        height: 30rem;
+        margin-top: -15%;
+    }
+    .card-o img{
+        height: 625px;
+        width: 450px;
+        margin-left: -20rem;
+        margin-top: 13.5rem;
+    }
+    .card-o #add-cart, .card-o #shop-now{
+        font-size: 2.7rem;
+        border-radius: 35px;
+    }
+    #buy-amount button{
+        width: 4rem;
+        height: 4rem;
+    }
+    #buy-amount #amount{
+        width: 5rem;
+        height: 4rem;
+        font-size: 2.5rem;
+    }
+    #buy-amount{
+        margin-bottom: 3rem;
+    }
+    .books .info-of-book th, .books .info-of-book td, .books .info-of-book h3{
+        font-size: 2.6rem;
+    }
+    .books{
+        display: block;
+        padding-left: 0rem;
+        height: 150rem;
+    }
+    .books .info-of-book{
+        margin: 0 auto;
+        margin-bottom: 3rem;
+        width: 70rem;
+    }
+    .container{
+        width: 50rem;
+        max-width: 100%;
+        height: 80rem;
+        max-height: 100rem;
+    }
+    /*.container .wrapper{
+        width: 40px;
+        max-width: 60rem;
+        height: 70rem;
+    }*/
+    .container .wrapper img{
+        width: 50rem;
+        max-width: 100%;
+        height: 80rem;
+        max-height: 100%;
+    }
+    .container .buttons button{
+        width: 7rem;
+        height: 7rem;
+        border-radius: 50%;
+        font-size: 3rem;
+    }
+    .container .dots li{
+        width: 1.5rem;
+        height: 1.5rem;
+        margin: 1.5rem;
+        border-radius: 20px;
+    }
+    .container .dots li.active{
+        width: 3rem;
+    }
+    .products .product-card{
+        display: block;
+       
+    }
+    .product-card .card{
+        margin: 0 auto;
+        width: 50rem;
+        height: 95rem;
+        text-align: center;
+        margin-bottom: 60px;
+    }
+    .products h2{
+        font-size: 4rem;
+        
+    }
+    .card .info p{
+        font-size: 3rem;
+        padding: 3rem;
+    }
+    .card .info .price-name{
+        display: inline;
+        block-size: 2rem;
+        
+    }
+    .card .info .price-name h3{
+        font-size: 3rem;
+        /*margin: 0 auto;*/
+        display: inline;
+    }
+    .card img{
+        margin-top: 30px;
+        width: 30rem;
+        height: 45rem;
+    }
+    .card #shop-now, .card #add-cart{
+        margin-top: 5rem;
+        font-size: 3.5rem;
+        border-radius: 45px;
+    }
+    footer{
+        font-size: 2rem;
+    }
+}
+@media screen and (max-width: 1025px) and (min-width: 768px) {
+    body{
+        width: 1440px;
+    }
+    header{
+        width: 1440px;
+    }
+}

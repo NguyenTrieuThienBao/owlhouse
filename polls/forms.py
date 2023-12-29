@@ -29,3 +29,9 @@ class LoginForm(AuthenticationForm):
         strip=False,
         widget=forms.PasswordInput,
     )
+
+class PaymentForm(forms.Form):
+    name = forms.CharField(max_length=255)
+    phone_num = forms.CharField(max_length=255)
+    address = forms.CharField(max_length=255)
+    amount = forms.CharField(max_length=255)

@@ -1,10 +1,11 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" type="text/css" href="account_style.css">
-    <link rel="stylesheet" type="text/css" href="homepage_style.css">
+    <link rel="stylesheet" type="text/css" href="{% static 'polls/css/account_style.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'polls/css/homepage_style.css' %}">
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
     <title>Document</title>
 </head>
@@ -14,10 +15,8 @@
         <i class='bx bx-menu' style='color:#12f7ff' id="bx-menu">
             <div class="menu" id="menu">
                 <ul class="sub-menu">
-                    <li><a href="homepage_index.html">Trang chủ</a></li>
-                    <li><a href="list_book_index.html">Tất cả sản phẩm</a></li>
-                    <li><a href="#">Sách nổi bật</a></li>
-                    <li><a href="#">Sách bán chạy</a></li>
+                    <li><a href="{% url 'polls:homepage' %}">Trang chủ</a></li>
+                    <li><a href="{% url 'polls:listbooks' %}">Tất cả sản phẩm</a></li>
                     <li><a href="#">Thể loại</a>
                         <i class='bx bx-chevron-down' id="the-loai-chevron-down"></i>
                         <ul class="the-loai" id="the-loai">
@@ -71,21 +70,23 @@
                 </ul>
             </div>
         </i>
-        <img src="image/logo.svg" alt="">
+        <img src="{% static 'polls/image/logo.svg' %}" alt="">
         <a href="#" class="logo">Ngôi nhà của Cú</a>
         <ul class="search">
+            <form action="{% url 'polls:search' %}" method="get">
             <li>
-                <input type="text" placeholder="Tìm kiếm">
-                <button><i class='bx bx-search-alt' style='color:#12f7ff'></i></button>
+                <input type="text" placeholder="Tìm kiếm" name="search">
+                <button type='submit'><i class='bx bx-search-alt' style='color:#12f7ff'></i></button>
             </li>
-            <li><a href="shopping_cart_index.html"><i class='bx bx-shopping-bag' style='color:#12f7ff' ></i></a></i></li>
-            <li><a href="account_index.html"><i class='bx bxs-user' style='color:#12f7ff'></i></a></li>
+            </form>
+            <li><a href="{% url 'polls:cart' %}"><i class='bx bx-shopping-bag' style='color:#12f7ff' ></i></a></i></li>
+            <li><a href="{% url 'polls:account' %}"><i class='bx bxs-user' style='color:#12f7ff'></i></a></li>
         </ul>
         <ul class="navlist">
-            <li><a href="homepage_index.html">Trang chủ</a></li>
-            <li><a href="homepage_index.html#about">Giới thiệu</a></li>
-            <li><a href="#contact">Liên hệ</a></li>
-            <li><a href="login_index.html">Đăng nhập</a></li>
+            <li><a href="{% url 'polls:homepage' %}">Trang chủ</a></li>
+            <li><a href="{% url 'polls:homepage' %}#about">Giới thiệu</a></li>
+            <li><a href="{% url 'polls:homepage' %}#contact">Liên hệ</a></li>
+            <li><a href="{% url 'polls:login' %}">Đăng nhập</a></li>
         </ul>
     </header>
 
@@ -96,29 +97,41 @@
     </ul>
 
     <!--Nội dung thông tin của mỗi tài khoản-->
-    <img src="image/logo.svg" alt="" id="small-logo">
+    <img src="{% static 'polls/image/logo.svg' %}" alt="" id="small-logo">
     <div class="profile">
         <h1>Thông tin tài khoản</h1>
         <div class="eachline">
             <p><b>Tên đăng nhập: </b></p>
-            <p>Nhập</p>
+            <p>{{ user.username }}</p>
         </div>
         <div class="eachline">
             <p><b>Email: </b></p>
-            <p>Nhập</p>
+            <p>{{ user.email }}</p>
         </div>
         <div class="eachline">
             <p><b>Số điện thoại: </b></p>
-            <p>Nhập</p>
+            <p>{{ user.phone }}</p>
         </div>
         <div class="eachline">
             <p><b>Số lượng đơn hàng đã mua: </b></p>
-            <p>Nhập</p>
+            <p>{{ total_order }}</p>
         </div>
         <div class="eachline">
-            <p><b>Thông tin đơn hàng (nếu có): </b></p>
-            <p>Nhập</p>
+            <p><b>Thông tin đơn hàng (nếu có): </b></p><br>
         </div>
+        {% for order in orders %}
+        <div class="eachline">
+            <p>Mã đơn hàng: {{ order.id }}</p><br>
+        </div>
+            {% for item in items%}
+                {% if item.order == order %}
+                <div class="eachline">
+                        <p>{{ item.product.title }} - Số lượng: {{ item.quantity }}</p><br>
+                </div>
+                {% endif %}
+            {% endfor %}
+        {% endfor %}
+            
     </div>
     
     <footer id="contact">

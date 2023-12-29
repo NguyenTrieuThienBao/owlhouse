@@ -4,27 +4,30 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" type="text/css" href="{% static 'polls/css/login_style.css' %}">
-    <link rel="stylesheet" type="text/css" href="{% static 'polls/css/homepage_style.css' %}">
-    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
     <title>Document</title>
+    <link rel="stylesheet" type="text/css" href="{% static 'polls/css/homepage_style.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'polls/css/pay_style.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'polls/css/account_style.css' %}">
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
 </head>
-<!--Đây là trang đăng nhập của website-->
-<body class="login-html">
+<!--Đây là trang thanh toán sản phẩm-->
+<body class="pay-html">
     <!--header-->
     <header>
-         <i class='bx bx-menu' style='color:#12f7ff' id="bx-menu">
+        <i class='bx bx-menu' style='color:#12f7ff' id="bx-menu">
             <div class="menu" id="menu">
                 <ul class="sub-menu">
                     <li><a href="{% url 'polls:homepage' %}">Trang chủ</a></li>
                     <li><a href="{% url 'polls:listbooks' %}">Tất cả sản phẩm</a></li>
+                    <li><a href="#">Sách nổi bật</a></li>
+                    <li><a href="#">Sách bán chạy</a></li>
                     <li><a href="#">Thể loại</a>
                         <i class='bx bx-chevron-down' id="the-loai-chevron-down"></i>
                         <ul class="the-loai" id="the-loai">
                             <li><a href="#">Văn học</a></li>
                             <ul class="Van-hoc">
-                                <li><a href="{% url 'polls:category_list' category_slug='van-hoc-hien-dai' %}">Văn học hiện đại</a></li>
-                                <li><a href="{% url 'polls:category_list' category_slug='van-hoc-nuoc-ngoai' %}">Văn học nước ngoài</a></li>
+                                <li><a href="/category/van-hoc-hien-dai">Văn học hiện đại</a></li>
+                                <li><a href="/category/van-hoc-nuoc-ngoai">Văn học nước ngoài</a></li>
                                 <li><a href="#">Tiểu thuyết</a></li>
                                 <li><a href="#">Ngôn tình</a></li>
                                 <li><a href="#">Truyện ngắn - Tản văn</a></li>
@@ -72,76 +75,39 @@
             </div>
         </i>
         <img src="{% static 'polls/image/logo.svg' %}" alt="">
-        <a href="#" class="logo">Ngôi nhà của Cú</a>
+        <a href="{% url 'polls:homepage' %}" class="logo">Ngôi nhà của Cú</a>
         <ul class="search">
             <form action="{% url 'polls:search' %}" method="get">
             <li>
                 <input type="text" placeholder="Tìm kiếm" name="search">
-                <button type="submit"><i class='bx bx-search-alt' style='color:#12f7ff'></i></button>
+                <button type='submit'><i class='bx bx-search-alt' style='color:#12f7ff'></i></button>
             </li>
             </form>
-            {% if user.is_authenticated %}
-            <li><a href="/shopping-cart"><i class='bx bx-shopping-bag' style='color:#12f7ff'></i></a></li>
+            <li><a href="/shopping-cart/"><i class='bx bx-shopping-bag' style='color:#12f7ff' ></i></a></i></li>
             <li><a href="#"><i class='bx bxs-user' style='color:#12f7ff'></i></a></li>
-            {% else %}
-            <li><a href="{% url 'polls:login' %}"><i class='bx bx-shopping-bag' style='color:#12f7ff'></i></a></li>
-            <li><a href="#"><i class='bx bxs-user' style='color:#12f7ff'></i></a></li>
-            {% endif %}
         </ul>
         <ul class="navlist">
-           <li><a href="/">Trang chủ</a></li>
-            <li><a href="/#about">Giới thiệu</a></li>
-            <li><a href="/#contact">Liên hệ</a></li>
-            <li><a href="/login">Đăng nhập</a></li>
+            <li><a href="homepage_index.html">Trang chủ</a></li>
+            <li><a href="#about">Giới thiệu</a></li>
+            <li><a href="#contact">Liên hệ</a></li>
+            <li><a href="register_index.html">Đăng nhập</a></li>
         </ul>
     </header>
 
-    <!--Đây là đường dẫn mỗi trang-->
+    <!--Đường dẫn mỗi trang-->
     <ul class="breadcrumb">
         <li><a href="{% url 'polls:homepage' %}">Trang chủ</a></li>
-        <li>Đăng nhập</li>
+        <li><a href="shopping_cart_index.html">Giỏ hàng</a></li>
+        <li>Thanh toán</li>
     </ul>
 
-
-    <!--Nội dung chính của trang đăng nhập-->
+    <!--Nội dung thanh toán-->
     <img src="{% static 'polls/image/logo.svg' %}" alt="" id="small-logo">
-    <div class="login">
-        {% if user.is_authenticated %}
-        <p>You are already logged in as {{ user.username }}. <a href="/logout">Đăng xuất</a></p>
-        {% else %}
-        <form id="loginForm" action="" method="post">
-            {% csrf_token %}
-            <h1>ĐĂNG NHẬP TÀI KHOẢN</h1>
-            {% if form.non_field_errors %}
-            <div class="form-control">
-                <div class="row">
-                    <p class="error">{{ form.non_field_errors }}</p>
-                </div>
-            </div>
-            {% endif %}
-            <div class="form-control">
-                <div class="row">
-                    <p>Tên đăng nhập</p>
-                    <input id="username" name="username" type="text" placeholder="Nhập tên đăng nhập">
-                </div>
-                <div class="row"><small></small></div>
-            </div>
-            <div class="form-control">
-                <div class="row">
-                    <p>Mật khẩu</p>
-                    <input id="password" name="password" type="password" placeholder="Nhập mật khẩu">
-                </div>
-                <div class="row"><small></small></div>
-            </div>
-            <div class="forgot_pass_or_reg">
-                <p><a href="{% url 'polls:forgot_password' %}">Quên mật khẩu?</a></p>
-                <p>or</p>
-                <p>Chưa có tài khoản? <a href="{% url 'polls:register' %}">Đăng kí</a></p>
-            </div>
-            <button type="submit" class="btn-submit-login">Đăng nhập</button>
-            {% endif %}
-        </form>
+    <div class="pay">
+        <h1>{{result}}</h1>
     </div>
+
+    <!--Thông tin liên hệ-->
     <footer id="contact">
         <h2>Liên hệ</h2>
         <ul>
@@ -154,6 +120,6 @@
             <i class='bx bxl-instagram'></i>
         </ul>
     </footer>
+    <script src="homepage_script.js"></script>
 </body>
-<script src="{% static 'polls/js/homepage_script.js' %}"></script>
 </html>

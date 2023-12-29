@@ -274,3 +274,137 @@ ul.breadcrumb li a:hover {
 }
 
 
+.info .delete-btn{
+    width: 30px;
+    height: 30px;
+    background-color: red;
+    border: 1px solid #121137;
+    cursor: pointer;
+    border-radius: 5px;
+    border-width: 2px;
+    margin-left: 1rem;
+}
+.info .delete-btn:hover{
+    box-shadow: 0 0 1rem #12f7ff;
+    background: #121137;
+    color: #12f7ff;
+    border: 2px solid #12f7ff;
+}
+
+@media screen and (max-width: 431px) and (min-width: 320px){
+    .search input{
+        font-size: 3rem;
+        width: 350px;
+        height: 100px;
+    }
+    header img{
+        width: 100px;
+        height: 100px;
+    }
+    ul.breadcrumb{
+        display: none;
+    }
+    .cart_body{
+        display: grid;
+        grid-template-columns: 55rem;
+        grid-template-rows: max-content;
+        grid-row-gap: 10rem;
+    }
+    .my_cart h1{
+        font-size: 4rem;
+    }
+    .my_cart h4{
+        font-size: 2.5rem;
+        padding-top: 5rem;
+    }
+    .my_cart{
+        width: 70rem;
+        height: max-content;
+        margin-top: 10rem;
+    }
+    .my_cart .button{
+        font-size: 3rem;
+        width: 30rem;
+        height: 6rem;
+        border-radius: 45px;
+        margin-left: 18rem;
+    }
+    .buy-amount .minus-btn, .buy-amount .amount, .buy-amount .plus-btn{
+       margin-top: 6rem;
+    }
+    .buy-amount .minus-btn, .buy-amount .plus-btn{
+        width: 3rem;
+        height: 3rem;
+    }
+    .buy-amount .amount{
+        height: 3rem;
+        width: 3.5rem;
+        font-size: 2rem;
+    }
+    .info .delete-btn{
+        margin-top: 6rem;
+        width: 3rem;
+        height: 3rem;
+        border-radius: 5px;
+        border-width: 2px;
+        margin-left: 1rem;
+    }
+    .info h3{
+        font-size: 3rem;
+    }
+    .one_product{
+        margin-top: 50px;
+        height: 30rem;
+    }
+    .show_img img{
+        margin-top: 30px;
+        width: 17rem;
+        height: 23rem;
+    }
+    .show_img #check{
+        width: 2.5rem;
+        height: 2.5rem;
+    }
+    .container{
+        width: 50rem;
+        max-width: 100%;
+        height: 80rem;
+        max-height: 100rem;
+        margin-left: 27%;
+    }
+    /*.container .wrapper{
+        width: 40px;
+        max-width: 60rem;
+        height: 70rem;
+    }*/
+    .container .wrapper img{
+        width: 50rem;
+        max-width: 100%;
+        height: 80rem;
+        max-height: 100%;
+    }
+    .container .buttons button{
+        width: 7rem;
+        height: 7rem;
+        border-radius: 50%;
+        font-size: 3rem;
+    }
+    .container .dots li{
+        width: 1.5rem;
+        height: 1.5rem;
+        margin: 1.5rem;
+        border-radius: 20px;
+    }
+    .container .dots li.active{
+        width: 3rem;
+    }
+}
+@media screen and (max-width: 1025px) and (min-width: 768px) {
+    body{
+        width: 1400px;
+    }
+    header{
+        width: 1400px;
+        
+    }
+}

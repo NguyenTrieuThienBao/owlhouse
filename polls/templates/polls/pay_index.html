@@ -18,14 +18,14 @@
             <div class="menu" id="menu">
                 <ul class="sub-menu">
                     <li><a href="{% url 'polls:homepage' %}">Trang chủ</a></li>
-                    <li><a href="#">Tất cả sản phẩm</a></li>
+                    <li><a href="{% url 'polls:listbooks' %}">Tất cả sản phẩm</a></li>
                     <li><a href="#">Thể loại</a>
                         <i class='bx bx-chevron-down' id="the-loai-chevron-down"></i>
                         <ul class="the-loai" id="the-loai">
                             <li><a href="#">Văn học</a></li>
                             <ul class="Van-hoc">
-                                <li><a href="#">Văn học hiện đại</a></li>
-                                <li><a href="#">Văn học nước ngoài</a></li>
+                                <li><a href="/category/van-hoc-hien-dai">Văn học hiện đại</a></li>
+                                <li><a href="/category/van-hoc-nuoc-ngoai">Văn học nước ngoài</a></li>
                                 <li><a href="#">Tiểu thuyết</a></li>
                                 <li><a href="#">Ngôn tình</a></li>
                                 <li><a href="#">Truyện ngắn - Tản văn</a></li>
@@ -72,89 +72,91 @@
                 </ul>
             </div>
         </i>
-        <img src="image/logo.svg" alt="">
-        <a href="#" class="logo">Ngôi nhà của Cú</a>
+        <img src="{% static 'polls/image/logo.svg' %}" alt="">
+        <a href="{% url 'polls:homepage' %}" class="logo">Ngôi nhà của Cú</a>
         <ul class="search">
+            <form action="{% url 'polls:search' %}" method="get">
             <li>
-                <input type="text" placeholder="Tìm kiếm">
-                <button><i class='bx bx-search-alt' style='color:#12f7ff'></i></button>
+                <input type="text" placeholder="Tìm kiếm" name="search">
+                <button type='submit'><i class='bx bx-search-alt' style='color:#12f7ff'></i></button>
             </li>
-            <li><a href="shopping_cart_index.html"><i class='bx bx-shopping-bag' style='color:#12f7ff' ></i></a></i></li>
-            <li><a href="account_index.html"><i class='bx bxs-user' style='color:#12f7ff'></i></a></li>
+            </form>
+            <li><a href="/shopping-cart/"><i class='bx bx-shopping-bag' style='color:#12f7ff' ></i></a></i></li>
+            <li><a href="#"><i class='bx bxs-user' style='color:#12f7ff'></i></a></li>
         </ul>
+        {% if user.is_authenticated %}
         <ul class="navlist">
-            <li><a href="homepage_index.html">Trang chủ</a></li>
-            <li><a href="#about">Giới thiệu</a></li>
-            <li><a href="#contact">Liên hệ</a></li>
-            <li><a href="register_index.html">Đăng nhập</a></li>
+            <li><a href="{% url 'polls:homepage' %}">Trang chủ</a></li>
+            <li><a href="{% url 'polls:homepage' %}#about">Giới thiệu</a></li>
+            <li><a href="{% url 'polls:homepage' %}#contact">Liên hệ</a></li>
+            <li><span>Hi, {{ user.username }}</span></li>
+            <li><a href="{% url 'polls:logout' %}">Đăng xuất</a></li>
         </ul>
+        {% else %}
+        <ul class="navlist">
+            <li><a href="{% url 'polls:homepage' %}">Trang chủ</a></li>
+            <li><a href="{% url 'polls:homepage' %}#about">Giới thiệu</a></li>
+            <li><a href="{% url 'polls:homepage' %}#contact">Liên hệ</a></li>
+            <li><a href="{% url 'polls:login' %}">Đăng nhập</a></li>
+        </ul>
+        {% endif %}
     </header>
 
     <!--Đường dẫn mỗi trang-->
     <ul class="breadcrumb">
-        <li><a href="homepage_index.html">Trang chủ</a></li>
-        <li><a href="shopping_cart_index.html">Giỏ hàng</a></li>
+        <li><a href="{% url 'polls:homepage' %}">Trang chủ</a></li>
+        <li><a href="{% url 'polls:cart' %}">Giỏ hàng</a></li>
         <li>Thanh toán</li>
     </ul>
 
     <!--Nội dung thanh toán-->
-    <img src="image/logo.svg" alt="" id="small-logo">
+    <img src="{% static 'polls/image/logo.svg' %}" alt="" id="small-logo">
     <div class="pay">
-        <form action="submit">
+        <form action="{% url 'polls:payment' %}" method="post">
+        {% csrf_token %}
             <h1>Thông tin thanh toán</h1>
             <div class="detail">
                 <div class="eachline">
                     <p><b>Họ và tên: </b></p>
-                    <p>Nhập</p>
+                    <input id="pay_username" type="text" name="pay_username">
                 </div>
                 <div class="eachline">
                     <p><b>Số điện thoại: </b></p>
-                    <p>Nhập</p>
+                    <input id="pay_phonenumber" type="text" name="pay_phonenumber">
                 </div>
                 <div class="eachline">
                     <p><b>Địa chỉ: </b></p>
-                    <p>Nhập</p>
+                    <input id="pay_address" type="text" name="pay_address">
                 </div>
                 <div class="eachline">
                     <p><b>Tổng số tiền: </b></p>
-                    <p>Nhập</p>
+                    <input id="pay_total" type="hidden" name='pay_total' value="{{ total_amount }}">
+                    <p>{{ total_amount }} đ</p>
                 </div>
             </div>
+            {% for item in items %}
+            {% for c in cart%}
+            {% if c.product_id == item.id %}
             <div class="books">
-                <img src="image/products/Phia-sau-nghi-can-X.webp" alt="">
+                <img src="{{ item.image.url }}" alt="">
                 <div class="detail_book">
                     <div class="line">
                         <p><b>Tên sản phẩm: </b></p>
-                        <p>Phía sau nghi can X</p>
+                        <p>{{ item.title }}</p>
                     </div>
                     <div class="line">
                         <p><b>Giá thành: </b></p>
-                        <p>Nhập</p>
+                        <p>{{ item.price }}</p>
                     </div>
                     <div class="line">
                         <p><b>Số lượng: </b></p>
-                        <p>1</p>
+                        <p>{{ c.quantity }}</p>
                     </div>
                 </div>
             </div>
-
-            <div class="books">
-                <img src="image/products/phapytanminh.jpeg" alt="">
-                <div class="detail_book">
-                    <div class="line">
-                        <p><b>Tên sản phẩm: </b></p>
-                        <p>Pháp y tần minh</p>
-                    </div>
-                    <div class="line">
-                        <p><b>Giá thành: </b></p>
-                        <p>Nhập</p>
-                    </div>
-                    <div class="line">
-                        <p><b>Số lượng: </b></p>
-                        <p>1</p>
-                    </div>
-                </div>
-            </div>
+            {% endif %}
+            {% endfor %}
+            {% endfor %}
             <button type="submit" class="btn-submit-pay">Thanh toán</button>
         </form>
     </div>

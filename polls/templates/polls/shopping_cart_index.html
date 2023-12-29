@@ -14,7 +14,8 @@
         <i class='bx bx-menu' style='color:#12f7ff' id="bx-menu">
             <div class="menu" id="menu">
                 <ul class="sub-menu">
-                    <li><a href="/">Trang chủ</a></li>
+                    <li><a href="{% url 'polls:homepage' %}">Trang chủ</a></li>
+                    <li><a href="{% url 'polls:listbooks' %}">Tất cả sản phẩm</a></li>
                     <li><a href="#">Thể loại</a>
                         <i class='bx bx-chevron-down' id="the-loai-chevron-down"></i>
                         <ul class="the-loai" id="the-loai">
@@ -73,12 +74,12 @@
         <ul class="search">
             <form action="{% url 'polls:search' %}" method="get">
             <li>
-                <input type="search" placeholder="Tìm kiếm" name="search">
-                <button class='bx bx-search-alt' style='color:#12f7ff' type='submit'></button>
+                <input type="text" placeholder="Tìm kiếm" name="search">
+                <button type='submit'><i class='bx bx-search-alt' style='color:#12f7ff'></i></button>
             </li>
-           </form>
+            </form>
             <li><a href="{% url 'polls:cart' %}"><i class='bx bx-shopping-bag' style='color:#12f7ff' ></i></a></i></li>
-            <li><a href="#"><i class='bx bxs-user' style='color:#12f7ff'></i></a></li>
+            <li><a href="{% url 'polls:account' %}"><i class='bx bxs-user' style='color:#12f7ff'></i></a></li>
         </ul>
         <ul class="navlist">
    {% if user.is_authenticated %}
@@ -101,62 +102,71 @@
     </header>
 
     <ul class="breadcrumb">
-        <li><a href="homepage_index.html">Trang chủ</a></li>
+        <li><a href="{% url 'polls:homepage' %}">Trang chủ</a></li>
         <li>Giỏ hàng</i> 
     </ul>
     <div class="cart_body">
     <div class="my_cart">
         <h1>Giỏ hàng của bạn</h1>
         {% for item in items %}
-            <div class="one_product">
-                <div class="show_img">
-                    <input type="checkbox" name="products" id="check">
-                    <img src="{{ item.image.url }}" alt="">
-                </div>
-                
-                <div class="info">
-                    <h3>{{ item.title}}</h3>
-                    <h4>Giá thành: {{ item.price }}</h4>
-                    <div id="buy-amount">
-                        <h4>Số lượng</h4>
-                        <button class="minus-btn" id="minus">
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="-3 -3 30 30" stroke-width="2.0" stroke="currentColor" class="w-6 h-6">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 12h-15" />
-                            </svg>
-                        </button>
-                        {% for c in cart %}
-                                {% if c.product_id == item.id %}
-                                    <input type="text" min="1" name="amount" id="amount" value="{{ c.quantity }}">
-                                {% endif %}
-                            {% endfor %}
-                        
-                        <button class="plus-btn" id="plus">
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="-3 -3 30 30" stroke-width="2.0" stroke="currentColor" class="w-6 h-6">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
-                            </svg>
-                        </button>
+        {% for c in cart %}
+        {% if c.product_id == item.id %}
+            <div class="one_product" id="cart-{{ c.id }}">
+                    <div class="show_img">
+                        <input type="checkbox" name="products" id="check">
+                        <img src="{{ item.image.url }}" alt="">
                     </div>
-                </div>
+                    <div class="info">
+                        <h3>{{ item.title}}</h3>
+                        <h4>Giá thành: {{ item.price }}đ</h4>
+                        <div class="buy-amount">
+                            <input type='hidden' name='csrfmiddlewaretoken' value='{{ csrf_token }}'>
+                            <h4>Số lượng</h4>
+                            <button class="minus-btn" id="minus" data-product-id="{{ item.id }}">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="-3 -3 30 30" stroke-width="2.0" stroke="currentColor" class="w-6 h-6">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 12h-15" />
+                                </svg>
+                            </button>
+                            
+                                    <input type="text" min="1" name="amount" id="amount-{{ item.id }}" class="amount" value="{{ c.quantity }}" style="width:40px">
+                            
+                            <button class="plus-btn" id="plus" data-product-id="{{ item.id }}">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="-3 -3 30 30" stroke-width="2.0" stroke="currentColor" class="w-6 h-6">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+                                </svg>
+                            </button>
+                            <button class="delete-btn" data-cart-id="{{ c.id }}">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="-3 -3 30 30" stroke-width="2.0" stroke="currentColor" class="w-6 h-6">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 7.5l15 9m0-9l-15 9" />
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
             </div>
+        {% endif %}
         {% endfor %}
-        <a href="{% url 'polls:payment' %}" class="button">Thanh toán</a>
+        {% endfor %}
+		
+        
+        <a href="{% url 'polls:payment_view' %}" class="button">Thanh toán</a>
     </div>
+    
     <div class="container">
             <div class="wrapper">
                 <div class="item"> 
-                    <img src="image/products/Dieu-ky-dieu-cua-tiem-tap-hoa-Namiya.webp">
+                    <img src="{% static 'polls/image/products/Dieu-ky-dieu-cua-tiem-tap-hoa-Namiya.webp' %}">
                 </div>
                 <div class="item">
-                    <img src="image/products/Tam-the.webp">
+                    <img src="{% static 'polls/image/products/Tam-the.webp' %}">
                 </div>
                 <div class="item">
-                    <img src="image/products/Phia-sau-nghi-can-X.webp">
+                    <img src="{% static 'polls/image/products/Phia-sau-nghi-can-X.webp' %}">
                 </div>
                 <div class="item">
-                    <img src="image/products/phapytanminh.jpeg">
+                    <img src="{% static 'polls/image/products/phapytanminh.jpeg' %}">
                 </div>
                 <div class="item">
-                    <img src="image/products/aoda02.webp">
+                    <img src="{% static 'polls/image/products/Quai-vat-trong-quan-do-nuong.webp' %}">
                 </div>
             </div>
             <div class="buttons">
@@ -172,6 +182,7 @@
             </ul>
         </div>
     </div>
+    
     <footer id="contact">
         <h2>Liên hệ</h2>
         <ul>
@@ -186,6 +197,101 @@
     </footer>
     <script src="{% static 'polls/js/shopping_cart_script.js' %}"></script>
     <script src="{% static 'polls/js/homepage_script.js' %}"></script>
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <script>
+    $(document).ready(function () {
+    $('.plus-btn').click(function() {
+        var productId = $(this).data('product-id');
+        var sProductAmount = $('#amount-' + productId).val();
+        var productAmount = parseInt(sProductAmount, 10) + 1;
+        event.preventDefault();
+        var csrfToken = $('input[name=csrfmiddlewaretoken]').val();
+        $.ajax({
+            type: 'POST',
+            url: "/update_from_cart/" + productId + '/' + productAmount,  // Replace with the actual URL of your view
+            headers: {
+                'X-CSRFToken': csrfToken  // Include CSRF token in the headers
+            },
+            success: function (data) {
+                $('#amount-' + productId).attr('value', productAmount.toString())
+            },
+            error: function (data) {
+                alert('Form submission failed!');
+            }
+        });
+    });
+
+    $('.delete-btn').click(function() {
+        var cartId = $(this).data('cart-id');
+        var infoDivId = "#cart-" + cartId;
+        
+        event.preventDefault();
+        var csrfToken = $('input[name=csrfmiddlewaretoken]').val();
+        $.ajax({
+            type: 'POST',
+            url: "/remove_from_cart/" + cartId,  // Replace with the actual URL of your view
+            headers: {
+                'X-CSRFToken': csrfToken  // Include CSRF token in the headers
+            },
+            success: function (data) {
+                $(infoDivId).remove();
+            },
+            error: function (data) {
+                alert('Form submission failed!');
+            }
+        });
+    });
+
+    $('.minus-btn').click(function() {
+        var productId = $(this).data('product-id');
+        var sProductAmount = $('#amount-' + productId).val();
+        var productAmount = parseInt(sProductAmount, 10) - 1;
+        if (productAmount < 1)
+        {
+            productAmount = 1;
+        }
+        
+        event.preventDefault();
+        var csrfToken = $('input[name=csrfmiddlewaretoken]').val();
+        $.ajax({
+            type: 'POST',
+            url: "/update_from_cart/" + productId + '/' + productAmount,  // Replace with the actual URL of your view
+            headers: {
+                'X-CSRFToken': csrfToken  // Include CSRF token in the headers
+            },
+            success: function (data) {
+                $('#amount-' + productId).attr('value', productAmount.toString())
+            },
+            error: function (data) {
+                alert('Form submission failed!');
+            }
+        });
+    });
+
+    $('.amount').change(function() {
+        var productAmount = $(this).val();
+        var productId = $(this).attr('id').substring(7, 8);
+        event.preventDefault();
+        var csrfToken = $('input[name=csrfmiddlewaretoken]').val();
+        $.ajax({
+            type: 'POST',
+            url: "/update_from_cart/" + productId + '/' + productAmount,  // Replace with the actual URL of your view
+            headers: {
+                'X-CSRFToken': csrfToken  // Include CSRF token in the headers
+            },
+            success: function (data) {
+                $('#amount-' + productId).val(productAmount);
+            },
+            error: function (data) {
+                alert('Form submission failed!');
+            }
+        });
+        
+    });
+
+
+    });
+</script>
 </body>
 
 </html>

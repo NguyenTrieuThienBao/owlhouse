@@ -92,10 +92,10 @@
             </form>
             {% if user.is_authenticated %}
             <li><a href="{% url 'polls:cart' %}"><i class='bx bx-shopping-bag' style='color:#12f7ff'></i></a></li>
-            <li><a href="#"><i class='bx bxs-user' style='color:#12f7ff'></i></a></li>
+            <li><a href="{% url 'polls:account'%}"><i class='bx bxs-user' style='color:#12f7ff'></i></a></li>
             {% else %}
             <li><a href="{% url 'polls:login' %}"><i class='bx bx-shopping-bag' style='color:#12f7ff'></i></a></li>
-            <li><a href="#"><i class='bx bxs-user' style='color:#12f7ff'></i></a></li>
+            <li><a href="{% url 'polls:login' %}"><i class='bx bxs-user' style='color:#12f7ff'></i></a></li>
             {% endif %}
         </ul>
         {% if user.is_authenticated %}
@@ -205,13 +205,14 @@
                         <p>Giá: {{ p.price }} đ</p>
                     </div>
                 </a>
-                <form action="{% url 'polls:add_cart' p.id %}" method='POST'>
+                {% with quantity=1 %}
+                <form action="{% url 'polls:add_cart' p.id quantity %}" method='POST' class='add-cart-form' data-product-id='{{ p.id }}' >
                     {% csrf_token %}
-                    <input type='hidden' name='add-cart'>
-                    <button href="#" class="btn" id="add-cart" type='submit'>Thêm vào <i class='bx bxs-cart'></i></button>
-                    <button href="#" class="btn" id="shop-now" type='submit'>Mua ngay</button>
+                    <input type='hidden' name='add-cart' value='{{ p.id }}' id='input-p-id'>
+                    <button href="#" class="btn" class="add-cart" type='submit'>Thêm vào <i class='bx bxs-cart'></i></button>
+                    <button onclick="redirect_to_cart()" class="btn" class="shop-now" type='submit'>Mua ngay</button>
                 </form>
-            
+                {% endwith %}
             </div>
             {% endfor %}
             
@@ -256,5 +257,45 @@
         </ul>
     </footer>
     <script src="{% static 'polls/js/homepage_script.js' %}"></script>
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <script>
+    $(document).ready(function () {
+    $('.add-cart-form').submit(function(event) {
+        var productId = $(this).data('product-id');
+        event.preventDefault();
+        var csrfToken = $("[name=csrfmiddlewaretoken]").val();
+        $.ajax({
+            type: 'POST',
+            url: "/add_cart/" + productId + '/1',  // Replace with the actual URL of your view
+            headers: {
+                'X-CSRFToken': csrfToken  // Include CSRF token in the headers
+            },
+            success: function (data) {
+        
+            },
+            error: function (data) {
+                alert('Form submission failed!');
+            }
+        });
+    });
+
+    });
+
+    var isClicked = false;
+    function redirect_to_cart()
+    {
+        if (isClicked){
+            return;
+        }
+        isClicked = true;
+        setTimeout(function() {
+        // Reset the flag after the delay
+        isClicked = false;
+        
+        // Redirect to another page
+        window.location.href = '/shopping-cart'; // Replace with your desired URL
+    }, 100);
+    };
+    </script>
 </body>
 </html>

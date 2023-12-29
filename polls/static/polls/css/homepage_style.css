@@ -435,3 +435,170 @@ footer li {
     }
 }
 
+@media screen and (max-width: 431px) and (min-width: 320px){
+    body{
+        width: 1300px;
+    }
+    header{
+        width: 1300px;
+        height: 300px;
+        
+    }
+    header a{
+        font-size: 4rem;
+    }
+    header .bx-menu{
+        font-size: 5rem;
+    }
+    .navlist li a{
+        display: none;
+    }
+    .logo{
+        font-size: 3rem;
+    }
+    .info-box{
+        display: none;
+    }
+    .menu {
+        width: 700px;
+        height: 700px;
+    }
+    .menu li a{
+        font-size: 3rem;
+    }
+    .sub-menu a{
+        font-size: 2rem;
+    }
+    .search input{
+        font-size: 3rem;
+        width: 350px;
+        height: 100px;
+    }
+    .search .bx-search-alt{
+        font-size: 5rem;
+    }
+    header img{
+        width: 100px;
+        height: 100px;
+    }
+    ul.breadcrumb{
+        display: none;
+    }
+    .info-o p{
+        font-size: 6rem;
+    }
+    .collapsed h2, .collapsed p{
+        font-size: 1.6rem;
+    }
+    .btn{
+        font-size: 1.5rem;
+    }
+    .choose-us-card .card{
+        width: 350px;
+        height: 1370px;
+    }
+    .choose-us-card p{
+        font-size: 2.5rem;
+    }
+    .choose-us-card h1{
+        font-size: 3rem;
+    }
+    .choose-us-card img{
+        width: 300px;
+        height: 350px;
+    }
+    .products h2{
+        font-size: 4rem;
+        padding-bottom: 3rem;
+    }
+    .product-card{
+        display: block;
+        
+    }
+    .product-card .card{
+        margin: 0 auto;
+        width: 50rem;
+        height: 90rem;
+        text-align: center;
+        margin-bottom: 60px;
+    }
+    .card .price-name {
+        display: inline;
+        block-size: 12rem;
+        padding-top: 20px;
+    }
+    .card .price-name h3 {
+        display: inline;
+        font-family: 'Agbalumo', sans-serif;
+        font-size: 3rem;
+        margin: 0 auto;
+        padding: 10px 10px;
+        margin-bottom: 10rem;
+    }
+    .info {
+        padding-bottom: .5rem;
+    }
+    .product-card .info p {
+        font-family: 'Agbalumo', sans-serif;
+        display: block;
+        block-size: 8rem;
+        font-size: 2.7rem;
+    }
+    .product-card img{
+        margin-top: 30px;
+        width: 30rem;
+        height: 45rem;
+    }
+    .card #shop-now, .card #add-cart{
+        margin-top: 1rem;
+        font-size: 3.5rem;
+        border-radius: 45px;
+    }
+    .author-card {
+        /*display: flex;
+        align-items: center;
+        justify-content: center;*/
+        gap: 1rem;
+    }
+    .author h2{
+        font-size: 4rem;
+        /*padding: 2rem 0 1rem 0;
+        text-align: center;
+        margin-bottom: 5rem;
+        margin-top: 1rem;*/
+    }
+    .author-card p{
+        font-size: 2rem;
+    }
+    .author-card img {
+        border-radius: 50%;
+        height: 250px;
+        width: 250px;
+    }
+    .choose-us {
+        background: #121137;
+        padding: 3rem 10%;
+        font-family: 'Agbalumo', sans-serif;
+    }
+    .choose-us h2 {
+        font-size: 4rem;
+        padding: 12rem 0 3rem 0;
+        text-align: center;
+        margin-bottom: 5rem;
+        margin-top: 5rem;
+    }
+    #contact{
+        font-size: 2rem;
+    }
+
+
+}
+@media screen and (max-width: 1025px) and (min-width: 768px) {
+    body{
+        width: 1400px;
+    }
+    header{
+        width: 1400px;
+        
+    }
+}
