@@ -2,25 +2,21 @@ from pathlib import Path
 import os
 from urllib.parse import quote
 
-
-# Build paths inside the project like this: BASE_DIR / 'subdir'.
+# Xây dựng đường dẫn trong dự án như sau: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+# Cài đặt phát triển nhanh - không phù hợp cho môi trường sản xuất
+# Xem https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
-# Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
-
-# SECURITY WARNING: keep the secret key used in production secret!
+# BẢO MẬT CẢNH BÁO: giữ cho khóa bí mật được sử dụng trong sản xuất là bí mật!
 SECRET_KEY = 'django-insecure-1piwked@gqk-z_jh4x06+-fv)akxuk0q52ahsqn%et!)63glcz'
 
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+# BẢO MẬT CẢNH BÁO: đừng chạy với chế độ debug bật trong sản xuất!
+DEBUG = True
 
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = []
 
-
-# Application definition
-
+# Định nghĩa ứng dụng
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -64,8 +60,7 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'ltweb.wsgi.application'
 
-
-# Database
+# Cơ sở dữ liệu
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
 DATABASES = {
@@ -75,8 +70,7 @@ DATABASES = {
     }
 }
 
-
-# Password validation
+# Kiểm tra mật khẩu
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
 
 AUTH_PASSWORD_VALIDATORS = [
@@ -98,7 +92,7 @@ AUTHENTICATION_BACKENDS = [
     'polls.backends.CustomUserModelBackend',
 ]
 
-# Internationalization
+# Quốc tế hóa
 # https://docs.djangoproject.com/en/4.2/topics/i18n/
 
 LANGUAGE_CODE = 'en-us'
@@ -109,29 +103,28 @@ USE_I18N = True
 
 USE_TZ = True
 
-
-# Static files (CSS, JavaScript, Images)
+# Tệp tĩnh (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
 STATIC_URL = 'static/'
-STATIC_ROOT = os.path.join(BASE_DIR, "static")
-# Default primary key field type
+
+# Loại trường khóa chính mặc định
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 AUTH_USER_MODEL = 'polls.CustomUser'
-SESSION_ENGINE = 'django.contrib.sessions.backends.db'  # Database-backed sessions
-SESSION_SAVE_EVERY_REQUEST = True  # Save the session on every request
-LOGIN_URL = 'login'  # Redirect unauthenticated users here
+SESSION_ENGINE = 'django.contrib.sessions.backends.db'  # Sessions được lưu trữ trong cơ sở dữ liệu
+SESSION_SAVE_EVERY_REQUEST = True  # Lưu phiên mỗi lần yêu cầu
+LOGIN_URL = 'login'  # Chuyển hướng người dùng chưa xác thực đến đây
 LOGOUT_URL = 'logout'
-LOGIN_REDIRECT_URL = 'home'  # Redirect authenticated users here
+LOGIN_REDIRECT_URL = 'home'  # Chuyển hướng người dùng đã xác thực đến đây
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')
 
-# VNPAY CONFIG
-VNPAY_RETURN_URL = 'https://baonguyen1493.pythonanywhere.com/payment_return'  # get from config
-VNPAY_PAYMENT_URL = 'https://sandbox.vnpayment.vn/paymentv2/vpcpay.html'  # get from config
+# Cấu hình VNPAY
+VNPAY_RETURN_URL = 'http://localhost:8000/payment_return'  # Lấy từ cấu hình
+VNPAY_PAYMENT_URL = 'https://sandbox.vnpayment.vn/paymentv2/vpcpay.html'  # Lấy từ cấu hình
 VNPAY_API_URL = 'https://sandbox.vnpayment.vn/merchant_webapi/api/transaction'
-VNPAY_TMN_CODE = '460XLNUO'  # Website ID in VNPAY System, get from config
-VNPAY_HASH_SECRET_KEY = 'NXWICYVCMPFEIFLXGXDFPBMXOMYEZAHM'  # Secret key for create checksum,get from config
+VNPAY_TMN_CODE = '460XLNUO'  # ID trang web trong hệ thống VNPAY, lấy từ cấu hình
+VNPAY_HASH_SECRET_KEY = 'NXWICYVCMPFEIFLXGXDFPBMXOMYEZAHM'  # Khóa bí mật để tạo checksum, lấy từ cấu hình
